@@ -11,6 +11,7 @@
 
 import {Button, Space, Table} from "antd";
 import React from "react";
+import AddDepartmentModal from "./UpdateModal";
 
 interface DataType {
     key: string;
@@ -58,7 +59,7 @@ const columns = [
         key: 'operation',
         render: (_: unknown, record: DataType) => (
             <Space>
-                <Button type="primary">编辑</Button>
+                <AddDepartmentModal mode="edit" initValue={record}/>
                 <Button type="primary" danger>删除</Button>
             </Space>
         ),
@@ -73,12 +74,13 @@ const DepartsManage: React.FC = () => {
             padding: "20px"
         }}>
             <div>
-                <Button type="primary">新增部门</Button>
+                <AddDepartmentModal mode={"add"} initValue={0}/>
             </div>
             <Table dataSource={dataSource} columns={columns} style={{
                 width: '100%',
                 height: '100%',
                 overflow: 'auto',
+                marginTop: '20px'
             }}/>
         </div>
     )

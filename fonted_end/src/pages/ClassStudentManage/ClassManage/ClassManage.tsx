@@ -1,4 +1,5 @@
 import {Button, Input, Space, Table} from "antd";
+import AddModal from "./AddModal";
 
 //序号
 // 班级名称
@@ -81,7 +82,7 @@ const columns = [
         key: 'operation',
         render: (_: unknown, record: DataType) => (
             <Space size="middle">
-                <Button>编辑</Button>
+                <AddModal mode={"edit"} initValue={record}/>
                 <Button>删除</Button>
             </Space>
         ),
@@ -105,7 +106,7 @@ const ClassManage = () => {
                 <Button type="primary" style={{marginBottom: '20px'}}>查询班级</Button>
             </div>
 
-            <Button type="primary" style={{marginBottom: '20px'}}>新增班级</Button>
+            <AddModal mode={"add"} initValue={0}/>
         </div>
         <Table dataSource={dataSource} columns={columns} style={{
             width: '100%',

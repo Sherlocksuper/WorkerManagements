@@ -3,7 +3,7 @@ package main
 import (
 	"back_end/config"
 	"back_end/internal/router"
-	"back_end/modal"
+	"back_end/modal/de"
 	"github.com/gin-gonic/gin"
 )
 

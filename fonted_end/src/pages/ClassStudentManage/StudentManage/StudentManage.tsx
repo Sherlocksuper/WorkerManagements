@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Table, Input, Button, Space, Select, DatePicker, Modal, Form} from 'antd';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import UpdateStudent from "./UpdateStudent";
 
 const {Option} = Select;
 
@@ -91,7 +92,7 @@ const StudentManage: React.FC = () => {
             key: 'operation',
             render: (_: unknown, record: unknown) => (
                 <Space>
-                    <Button type="primary">编辑</Button>
+                    <UpdateStudent mode="edit" initValue={0}/>
                     <Button danger>违纪</Button>
                     <Button danger>删除</Button>
                 </Space>
@@ -111,31 +112,19 @@ const StudentManage: React.FC = () => {
                     <Input placeholder="请输入学号"/>
                 </Form.Item>
 
-                <Form.Item label="所属班级" name="class">
-                    <Select placeholder="请选择">
-                        <Option value="2024第01期10班">2024第01期10班</Option>
-                        {/* 其他班级选项 */}
-                    </Select>
-                </Form.Item>
-
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         查询
                     </Button>
                 </Form.Item>
 
-                <Button type="dashed" icon={<PlusOutlined/>} onClick={showAddModal}>
-                    添加学员
-                </Button>
-                <Button type="primary" icon={<MinusCircleOutlined/>} onClick={handleDeleteSelected}>
-                    批量删除
-                </Button>
+                <UpdateStudent mode={"add"} initValue={0}/>
             </Form>
             <Table dataSource={students} columns={columns} rowKey="key" style={{
                 marginTop: '20px',
             }}/>
             {/* 新增学员模态框 */}
-            <Modal title="添加学员" visible={false} onCancel={handleAddCancel} footer={null}>
+            <Modal title="添加学员" open={false} onCancel={handleAddCancel} footer={null}>
                 {/* 新增学员表单内容 */}
             </Modal>
         </div>

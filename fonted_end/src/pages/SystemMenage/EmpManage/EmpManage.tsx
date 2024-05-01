@@ -1,6 +1,7 @@
 import React from 'react';
-import {Table, Input, Button, Space, DatePicker, Form, Modal} from 'antd';
+import {Table, Input, Button, Space, DatePicker, Form, Modal, Upload} from 'antd';
 import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import AddEmployeeModal from "./UpdateEmp";
 
 const {RangePicker} = DatePicker;
 
@@ -67,7 +68,7 @@ const EmpManage: React.FC = () => {
             key: 'operation',
             render: (_: unknown, record: unknown) => (
                 <Space>
-                    <Button type="primary">编辑</Button>
+                    <AddEmployeeModal mode={"edit"}/>
                     <Button danger>删除</Button>
                 </Space>
             ),
@@ -95,9 +96,9 @@ const EmpManage: React.FC = () => {
                         查询
                     </Button>
                 </Form.Item>
-                <Button type="dashed" icon={<PlusOutlined/>} onClick={showAddModal}>
-                    新增员工
-                </Button>
+
+                <AddEmployeeModal mode={"add"}/>
+
                 <Button type="dashed" icon={<MinusCircleOutlined/>} onClick={handleDeleteSelected}>
                     批量删除
                 </Button>
@@ -105,7 +106,6 @@ const EmpManage: React.FC = () => {
             <Table dataSource={employees} columns={columns} rowKey="key" style={{
                 marginTop: '20px',
             }}/>
-            {/* 新增员工模态框 */}
             <Modal title="新增员工" open={false} onCancel={handleAddCancel} footer={null}>
                 {/* 新增员工表单内容 */}
             </Modal>

@@ -61,11 +61,10 @@ const MyMenu: React.FC = () => {
         <Menu
             onClick={onClick}
             style={{width: 256, height: '100vh'}}
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={['/classManage']}
             defaultOpenKeys={['sub1']}
             mode="inline"
             items={items}
-
         />
     );
 };
