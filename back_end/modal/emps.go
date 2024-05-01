@@ -1,6 +1,6 @@
 package modal
 
-import "time"
+import "gorm.io/gorm"
 
 //| \|- id         | number | 非必须 |      | id                                                           |      |
 //| -------------- | ------ | ------ | ---- | ------------------------------------------------------------ | ---- |
@@ -16,17 +16,15 @@ import "time"
 //| \|- updateTime | string | 非必须 |      | 更新时间                                                     |      |
 
 type Emps struct {
-	ID        uint      `gorm:"primaryKey"`
-	Username  string    `json:"username"`
-	Name      string    `json:"name"`
-	Password  string    `json:"password"`
-	Entrydate string    `json:"entryDate"` //入职日期
-	Gender    Gender    `json:"gender"`    //性别
-	Image     string    `json:"image"`
-	Job       Job       `json:"job"`
-	DeptID    uint      `json:"deptId"`
-	CreateAt  time.Time `json:"createAt"`
-	UpdateAt  time.Time `json:"updateAt"`
+	gorm.Model
+	Username  string `json:"username"`
+	Name      string `json:"name"`
+	Password  string `json:"password"`
+	Entrydate string `json:"entryDate"` //入职日期
+	Gender    Gender `json:"gender"`    //性别
+	Image     string `json:"image"`
+	Job       Job    `json:"job"`
+	DeptID    uint   `json:"deptId"`
 }
 
 // Gender Gender枚举值

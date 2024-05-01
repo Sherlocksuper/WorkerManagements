@@ -9,19 +9,25 @@ import (
 type IListParams interface {
 }
 
-func DeleteEmp(ids []int) error {
-	for i := range ids {
-		err := config.IConfig.Db.Delete(&modal.Emps{}, ids[i])
-		if err != nil {
-			return err.Error
-		}
+func GetEmps(emps *[]modal.Emps) error {
+	err := config.IConfig.Db.Find(&emps)
+	if err != nil {
+		return err.Error
+	}
+	return nil
+}
+
+func DeleteEmp(id string) error {
+	err := config.IConfig.Db.Delete(&modal.Emps{}, id)
+	if err != nil {
+		return err.Error
 	}
 
 	return nil
 }
 
 func AddEmp(emp *modal.Emps) error {
-	err := config.IConfig.Db.Create(emp)
+	err := config.IConfig.Db.Create(&emp)
 	if err != nil {
 		return err.Error
 	}
@@ -32,12 +38,12 @@ func FindEmpById(id string) (modal.Emps, error) {
 	if id <= "0" || id == "" {
 		return modal.Emps{}, errors.New("id格式错误")
 	}
-	var emp modal.Emps
+	var emp *modal.Emps
 	err := config.IConfig.Db.Find(&emp, id)
 	if err != nil {
-		return emp, err.Error
+		return *emp, err.Error
 	}
-	return emp, nil
+	return *emp, nil
 }
 
 func UpdateEmp(emp modal.Emps) error {

@@ -10,18 +10,18 @@ import (
 //> 请求方式：GET
 //> 接口描述：该接口用于部门列表数据查询
 
-func GetDeparts() ([]modal.Depart, error) {
-	var departs []modal.Depart
+func GetDeparts(departs *[]modal.Depart) error {
 
 	err := config.IConfig.Db.Find(&departs)
 
 	if err != nil {
-		return nil, err.Error
+		return err.Error
 	}
-	return departs, nil
+
+	return nil
 }
 
-func DeleteDepart(id int) error {
+func DeleteDepart(id string) error {
 	err := config.IConfig.Db.Delete(&modal.Depart{}, id)
 	if err != nil {
 		return err.Error
@@ -37,14 +37,14 @@ func CreateDepart(name string) error {
 	var depart modal.Depart
 	depart.Name = name
 
-	err := config.IConfig.Db.Create(depart)
+	err := config.IConfig.Db.Create(&depart)
 	if err != nil {
 		return err.Error
 	}
 	return nil
 }
 
-func FindById(id int) (modal.Depart, error) {
+func FindById(id string) (modal.Depart, error) {
 	var depart modal.Depart
 	err := config.IConfig.Db.Find(&depart, id)
 	if err != nil {
