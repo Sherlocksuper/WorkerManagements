@@ -3,6 +3,11 @@ import {request} from "../utils/request";
 import {Emp} from "../constants/Emp";
 import {IDepart} from "./depart";
 
+export interface IEmpSearch {
+    name?: string;
+    gender?: number
+}
+
 export interface IEmp {
     ID: number;
     username: string;
@@ -27,8 +32,8 @@ export const deleteEmp = async (params: { id: number }) => {
     return await request(api, params)
 }
 
-export const getAllEmp = async () => {
-    return await request(Emp.queryAllEmp)
+export const getAllEmp = async (searchData: IEmpSearch) => {
+    return await request(Emp.queryAllEmp, searchData)
 }
 
 export const getEmpById = async (params: { id: number }) => {

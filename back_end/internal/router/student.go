@@ -15,6 +15,6 @@ func RegisterStudentRouter(e *gin.Engine) {
 		studentGroup.POST("/update", studentHandler.UpdateStudent)
 		studentGroup.GET("/remove/:id", studentHandler.RemoveStudent)
 		studentGroup.GET("/findbyid/:id", studentHandler.FindStudentById)
-		studentGroup.GET("/findall", studentHandler.FindAllStudent)
+		studentGroup.POST("/findall", studentHandler.FindAllStudent)
 	}
 }

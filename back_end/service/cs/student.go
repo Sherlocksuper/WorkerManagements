@@ -3,13 +3,14 @@ package service
 import (
 	"back_end/config"
 	modal "back_end/modal/cs"
+	"gorm.io/gorm"
 )
 
 type IStudent interface {
 	UpdateStudent(stu *modal.Student) error
 	RemoveStudent(id string) error
 	FindStudentById(id string, stu *modal.Student) error
-	FindAllStudent(stu *[]modal.Student) error
+	FindAllStudent(stu *[]modal.Student, search *modal.StudentSearch) error
 }
 
 func NewStudentService() IStudent {
@@ -33,7 +34,17 @@ func (s StudentService) FindStudentById(id string, stu *modal.Student) error {
 	return nil
 }
 
-func (s StudentService) FindAllStudent(stu *[]modal.Student) error {
-	config.IConfig.Db.Preload("Class").Find(&stu)
+func (s StudentService) FindAllStudent(stu *[]modal.Student, sea *modal.StudentSearch) error {
+	query := config.IConfig.Db.Session(&gorm.Session{})
+
+	if sea.Name != "" {
+		query = query.Where("name LIKE ?", "%"+sea.Name+"%")
+	}
+
+	if sea.Phone != "" {
+		query = query.Where("phone LIKE ?", "%"+sea.Phone+"%")
+	}
+
+	query.Preload("Class").Find(&stu)
 	return nil
 }

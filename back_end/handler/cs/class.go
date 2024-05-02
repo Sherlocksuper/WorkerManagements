@@ -77,8 +77,12 @@ func (c ClassHandler) FindClassById(context *gin.Context) {
 
 func (c ClassHandler) FindAllClass(context *gin.Context) {
 	var err error
+
+	var search modal.SearchClass
+	err = context.BindJSON(&search)
+
 	var classes []modal.Class
-	err = c.chatService.FindAllClass(&classes)
+	err = c.chatService.FindAllClass(&classes, &search)
 	if err != nil {
 		context.JSON(200, gin.H{
 			"code": 0,

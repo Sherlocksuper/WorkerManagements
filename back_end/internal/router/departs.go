@@ -15,6 +15,6 @@ func RegisterDepart(e *gin.Engine) {
 		departGroup.POST("/update", departHandler.UpdateDepart)
 		departGroup.GET("/remove/:name", departHandler.RemoveDepart)
 		departGroup.GET("/findbyid/:id", departHandler.FindDepartById)
-		departGroup.GET("/findall", departHandler.FindAllDepart)
+		departGroup.POST("/findall", departHandler.FindAllDepart)
 	}
 }

@@ -1,6 +1,10 @@
 import {request} from "../utils/request";
 import {Class} from "../constants/Class";
 
+export interface IClassSearch {
+    name?: string;
+}
+
 export interface IClass {
     ID?: number;
     name: string;
@@ -22,8 +26,8 @@ export const deleteClass = async (params: { id: number }) => {
     return await request(api)
 }
 
-export const getAllClass = async () => {
-    return await request(Class.queryAllClass)
+export const getAllClass = async (searchData: IClassSearch) => {
+    return await request(Class.queryAllClass, searchData)
 }
 
 export const getClassById = async (params: { id: number }) => {

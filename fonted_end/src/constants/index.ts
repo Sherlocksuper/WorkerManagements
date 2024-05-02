@@ -11,7 +11,7 @@ export enum Job {
     Counselor = 5
 }
 
-export const getJobName = (num: number): string => {
+export const getJobName = (num: unknown): string => {
     switch (num) {
         case Job.HeadTeacher:
             return '班主任';
@@ -24,6 +24,6 @@ export const getJobName = (num: number): string => {
         case Job.Counselor:
             return '辅导员';
         default:
-            return '未知';
+            return num as string;
     }
 }

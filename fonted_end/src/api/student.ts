@@ -2,6 +2,11 @@ import {Student} from "../constants/Student";
 import {request} from "../utils/request";
 import {IClass} from "./class";
 
+export interface IStudentSearch {
+    name?: string;
+    phone?: string;
+}
+
 export interface IStudent {
     ID?: number;
     name: string;
@@ -26,8 +31,8 @@ export const deleteStudent = async (params: { id: number }) => {
     return await request(api)
 }
 
-export const getAllStudent = async () => {
-    return await request(Student.queryAllStudent)
+export const getAllStudent = async (searchData:IStudentSearch) => {
+    return await request(Student.queryAllStudent,searchData)
 }
 
 export const getStudentById = async (params: { id: number }) => {

@@ -9,7 +9,7 @@ export const Emp = {
     },
     queryAllEmp: {
         path: "/emp/findall",
-        method: "GET"
+        method: "POST"
     },
     queryEmp: {
         path: "/emp/findbyid",

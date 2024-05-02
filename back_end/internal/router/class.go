@@ -15,6 +15,6 @@ func RegisterClassRouter(e *gin.Engine) {
 		classGroup.POST("/update", classHandler.UpdateClass)
 		classGroup.GET("/remove/:id", classHandler.RemoveClass)
 		classGroup.GET("/findbyid/:id", classHandler.FindClassById)
-		classGroup.GET("/findall", classHandler.FindAllClass)
+		classGroup.POST("/findall", classHandler.FindAllClass)
 	}
 }

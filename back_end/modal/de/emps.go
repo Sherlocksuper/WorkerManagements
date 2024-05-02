@@ -2,6 +2,11 @@ package modal
 
 import "gorm.io/gorm"
 
+type EmpsSearch struct {
+	Name   string `json:"name"`
+	Gender Gender `json:"gender"`
+}
+
 type Emps struct {
 	gorm.Model
 	Username  string `json:"username"`

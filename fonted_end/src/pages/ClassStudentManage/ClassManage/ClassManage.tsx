@@ -1,7 +1,7 @@
-import {Button, Input, Space, Table} from "antd";
+import {Button, Form, Input, Space, Table} from "antd";
 import AddModal from "./AddModal";
 import {useEffect, useState} from "react";
-import {deleteClass, getAllClass, IClass} from "../../../api/class";
+import {deleteClass, getAllClass, IClass, IClassSearch} from "../../../api/class";
 import useMessage from "antd/lib/message/useMessage";
 
 const columns = [
@@ -49,8 +49,8 @@ const ClassManage = () => {
     const [classData, setClassData] = useState<IClass[]>([])
     const [messageApi, contextHolder] = useMessage()
 
-    const updateData = () => {
-        getAllClass().then(res => {
+    const updateData = (searchData: IClassSearch) => {
+        getAllClass(searchData).then(res => {
             res.data.forEach((item: IClass, index: number) => {
                 Object.setPrototypeOf(item, {key: item.ID})
             })
@@ -59,12 +59,14 @@ const ClassManage = () => {
     }
 
     useEffect(() => {
-        updateData()
+        updateData({})
     }, [])
 
     columns[columns.length - 1].render = (_: unknown, record: IClass) => (
         <Space size="middle">
-            <AddModal mode={"edit"} initValue={record} updateData={updateData}/>
+            <AddModal mode={"edit"} initValue={record} updateData={() => {
+                updateData({})
+            }}/>
             <Button onClick={() => {
                 onDelete(record.ID!)
             }}>删除</Button>
@@ -96,11 +98,21 @@ const ClassManage = () => {
             marginBottom: '20px',
         }}>
             <div>
-                <Input placeholder="请输入班级名称" style={{width: '200px', marginRight: '20px'}}/>
-                <Button type="primary" style={{marginBottom: '20px'}}>查询班级</Button>
+
+                <Form onFinish={(values) => {
+                    updateData(values)
+                }}>
+                    <Form.Item name="name">
+                        <Input placeholder="请输入班级名称" style={{width: '200px', marginRight: '20px'}}/>
+                    </Form.Item>
+                    <Button type="primary" style={{marginBottom: '20px'}} htmlType="submit">查询班级</Button>
+                </Form>
+
             </div>
 
-            <AddModal mode={"add"} initValue={undefined} updateData={updateData}/>
+            <AddModal mode={"add"} initValue={undefined} updateData={() => {
+                updateData({})
+            }}/>
         </div>
         <Table dataSource={classData} columns={columns} style={{
             width: '100%',

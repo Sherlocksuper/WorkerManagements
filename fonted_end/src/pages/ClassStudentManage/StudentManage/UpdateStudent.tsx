@@ -23,7 +23,7 @@ const AddStudentModal: React.FC<IAddStudentModalProps> = ({
         const [classes, setClasses] = useState<IClass[]>([]);
 
         useEffect(() => {
-            getAllClass().then((res) => {
+            getAllClass({}).then((res) => {
                 setClasses(res.data)
             })
         }, [])

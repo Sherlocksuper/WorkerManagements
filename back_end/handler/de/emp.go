@@ -3,6 +3,7 @@ package de
 import (
 	modal "back_end/modal/de"
 	service "back_end/service/de"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,6 +26,7 @@ func (h *EmpHandler) UpdateEmp(ctx *gin.Context) {
 			"msg":  "failed",
 			"data": err,
 		})
+		return
 	} else {
 		ctx.JSON(200, gin.H{
 			"code": 1,
@@ -72,8 +74,17 @@ func (h *EmpHandler) FindEmpById(ctx *gin.Context) {
 }
 
 func (h *EmpHandler) FindAllEmp(ctx *gin.Context) {
+
+	var search modal.EmpsSearch
+	err := ctx.BindJSON(&search)
+
+	fmt.Println("here")
+	fmt.Println(search.Gender)
+	fmt.Println(search.Name)
+
 	var emps []modal.Emps
-	err := h.empService.FindAllEmp(&emps)
+	err = h.empService.FindAllEmp(&emps, &search)
+
 	if err != nil {
 		ctx.JSON(200, gin.H{
 			"code": 0,

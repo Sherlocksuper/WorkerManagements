@@ -15,6 +15,6 @@ func RegisterEmp(e *gin.Engine) {
 		empGroup.POST("/update", empHandler.UpdateEmp)
 		empGroup.GET("/remove/:id", empHandler.RemoveEmp)
 		empGroup.GET("/findbyid/:id", empHandler.FindEmpById)
-		empGroup.GET("/findall", empHandler.FindAllEmp)
+		empGroup.POST("/findall", empHandler.FindAllEmp)
 	}
 }

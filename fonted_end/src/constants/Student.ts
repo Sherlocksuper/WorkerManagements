@@ -21,7 +21,7 @@ export const Student = {
     // 查询全部
     queryAllStudent: {
         path: '/student/findall',
-        method: 'GET',
+        method: 'POST',
     },
 }
 

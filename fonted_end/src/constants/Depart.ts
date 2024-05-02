@@ -17,6 +17,6 @@ export const Depart = {
     // 查询全部
     queryAllDepart: {
         path: '/depart/findall',
-        method: 'GET',
+        method: 'POST',
     },
 }

@@ -2,6 +2,10 @@ package modal
 
 import "gorm.io/gorm"
 
+type SearchClass struct {
+	Name string
+}
+
 type Class struct {
 	gorm.Model
 	Name        string `json:"name"`

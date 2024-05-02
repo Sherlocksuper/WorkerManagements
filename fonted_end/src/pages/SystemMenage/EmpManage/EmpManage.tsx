@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Table, Input, Button, Space, DatePicker, Form, Modal, Checkbox} from 'antd';
+import {Table, Input, Button, Space, DatePicker, Form, Modal, Checkbox, Select} from 'antd';
 import {MinusCircleOutlined} from '@ant-design/icons';
 import AddEmployeeModal from "./UpdateEmp";
-import {deleteEmp, getAllEmp, IEmp} from "../../../api/emp";
+import {deleteEmp, getAllEmp, IEmp, IEmpSearch} from "../../../api/emp";
 import {getJobName} from "../../../constants";
+import {Option} from "antd/es/mentions";
+import updateEmp from "./UpdateEmp";
 
 const {RangePicker} = DatePicker;
 
@@ -12,8 +14,8 @@ const EmpManage: React.FC = () => {
     const [employees, setEmployees] = useState<IEmp[]>([]);
     const [selectedEmp, setSelectedEmp] = useState<IEmp[]>([])
 
-    const updateData = () => {
-        getAllEmp().then((res) => {
+    const updateData = (searchData: IEmpSearch) => {
+        getAllEmp(searchData).then((res) => {
             res.data.forEach((item: IEmp, index: number) => {
                 Object.setPrototypeOf(item, {key: item.ID})
             })
@@ -22,19 +24,17 @@ const EmpManage: React.FC = () => {
     }
 
     useEffect(() => {
-        updateData()
+        updateData({})
     }, []);
 
     // 搜索、新增、删除等函数的实现将依赖于具体的业务逻辑和后端API
-
     const handleSearch = (values: any) => {
-        // 实现搜索逻辑
+        updateData({
+            name: values.name,
+            gender: Number(values.gender)
+        })
     };
 
-
-    const handleDeleteSelected = () => {
-        // 实现批量删除员工的逻辑
-    };
 
     const columns = [
         {
@@ -82,7 +82,13 @@ const EmpManage: React.FC = () => {
             render: (_: unknown, record: IEmp) => (
                 <Space>
                     <AddEmployeeModal mode={"edit"} initValue={record} updateData={updateData}/>
-                    <Button danger>删除</Button>
+                    <Button danger onClick={() => {
+                        deleteEmp({id: record.ID}).then((res) => {
+                            if (res.code === 1) {
+                                setEmployees(employees.filter((item) => item.ID !== record.ID))
+                            }
+                        })
+                    }}>删除</Button>
                 </Space>
             ),
         },
@@ -99,10 +105,10 @@ const EmpManage: React.FC = () => {
                     <Input placeholder="请输入员工姓名"/>
                 </Form.Item>
                 <Form.Item label="性别" name="gender">
-                    <Input placeholder="请选择"/>
-                </Form.Item>
-                <Form.Item label="入职时间" name="joinDate">
-                    <RangePicker/>
+                    <Select>
+                        <Option value="1">男</Option>
+                        <Option value="2">女</Option>
+                    </Select>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
@@ -121,7 +127,7 @@ const EmpManage: React.FC = () => {
                             })
                         }
                     }
-                    updateData()
+                    updateData({})
                 }}>
                     批量删除
                 </Button>

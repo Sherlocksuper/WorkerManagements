@@ -25,6 +25,9 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
 
     useEffect(() => {
         getAllDepart().then((res) => {
+            res.data.forEach((item: IDepart, index: number) => {
+                Object.setPrototypeOf(item, {key: item.ID})
+            })
             setDeparts(res.data);
         });
     }, []);
@@ -58,11 +61,11 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
             ...initValue,
             username: values.username,
             name: values.name,
-            gender: values.gender,
-            job: values.job,
+            gender: Number(values.gender),
+            job: Number(values.job),
             entryDate: values.entryDate,
             deptId: values.deptId,
-            image: values.image
+            image: values.image ?? "123"
         } as IEmp)
     };
 
@@ -119,9 +122,9 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                         name="gender"
                         label="性别"
                         rules={[{required: true, message: '请选择性别!'}]}
-                        initialValue={initValue?.gender === Gender.Male ? "男" : "女"}
+                        initialValue={initValue?.gender === Gender.FeMail ? "2" : "1"}
                     >
-                        <Select placeholder="请选择">
+                        <Select placeholder="请选择" defaultValue={initValue?.gender === Gender.FeMail ? "2" : "1"}>
                             <Option value="1">男</Option>
                             <Option value="2">女</Option>
                         </Select>
@@ -130,9 +133,9 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                         name="job"
                         label="职位"
                         rules={[{required: true, message: '请选择职位!'}]}
-                        initialValue={getJobName(initValue?.job || 1)}
+                        initialValue={initValue?.job ?? "1"}
                     >
-                        <Select placeholder="请选择">
+                        <Select placeholder="请选择" defaultValue={initValue?.job ?? "1"}>
                             <Option value="1">班主任</Option>
                             <Option value="2">讲师</Option>
                             <Option value="3">院长</Option>

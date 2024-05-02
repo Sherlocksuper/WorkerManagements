@@ -21,6 +21,6 @@ export const Class = {
     // 查询全部
     queryAllClass: {
         path: '/class/findall',
-        method: 'GET',
+        method: 'POST',
     },
 }

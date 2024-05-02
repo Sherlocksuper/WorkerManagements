@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Table, Input, Button, Space, Form} from 'antd';
 import UpdateStudent from "./UpdateStudent";
-import {deleteStudent, getAllStudent, IStudent} from "../../../api/student";
+import {deleteStudent, getAllStudent, IStudent, IStudentSearch} from "../../../api/student";
 
 const StudentManage: React.FC = () => {
     // 假设这是从后端获取的学员数据
     const [students, setStudents] = useState<IStudent[]>([]);
     const [selectedIds, setSelectedIds] = React.useState<number[]>([])
 
-    const updateData = () => {
-        getAllStudent().then((res) => {
+    const updateData = (searchData: IStudentSearch) => {
+        getAllStudent(searchData).then((res) => {
             res.data.forEach((item: IStudent, index: number) => {
                 Object.setPrototypeOf(item, {key: item.ID})
             })
@@ -18,11 +18,12 @@ const StudentManage: React.FC = () => {
     }
 
     useEffect(() => {
-        updateData()
+        updateData({})
     }, []);
 
     // 搜索、新增、删除等函数的实现将依赖于具体的业务逻辑和后端API
     const handleSearch = (values: any) => {
+        updateData(values)
     };
 
     const columns = [
@@ -92,7 +93,9 @@ const StudentManage: React.FC = () => {
             key: 'operation',
             render: (_: unknown, record: IStudent) => (
                 <Space>
-                    <UpdateStudent mode="edit" initValue={record} updateData={updateData}/>
+                    <UpdateStudent mode="edit" initValue={record} updateData={() => {
+                        updateData({})
+                    }}/>
                     <Button danger>违纪</Button>
                     <Button danger
                             onClick={() => {
@@ -119,15 +122,19 @@ const StudentManage: React.FC = () => {
                 <Form.Item label="学员姓名" name="name">
                     <Input placeholder="请输入学员姓名"/>
                 </Form.Item>
-                <Form.Item label="学号" name="studentId">
-                    <Input placeholder="请输入学号"/>
+
+                <Form.Item label="手机号" name="phone">
+                    <Input placeholder="请输入手机号"/>
                 </Form.Item>
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         查询
                     </Button>
                 </Form.Item>
-                <UpdateStudent mode={"add"} initValue={undefined} updateData={updateData}/>
+                <UpdateStudent mode={"add"} initValue={undefined} updateData={() => {
+                    updateData({})
+                }}/>
                 <Button danger onClick={() => {
                     selectedIds.forEach((id) => {
                         deleteStudent({id}).then((res) => {

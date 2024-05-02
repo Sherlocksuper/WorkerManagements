@@ -74,9 +74,13 @@ func (h *StudentHandler) FindStudentById(context *gin.Context) {
 }
 
 func (h *StudentHandler) FindAllStudent(context *gin.Context) {
+
+	var search modal.StudentSearch
 	var err error
+	err = context.ShouldBindJSON(&search)
+
 	var students []modal.Student
-	err = h.studentService.FindAllStudent(&students)
+	err = h.studentService.FindAllStudent(&students, &search)
 	if err != nil {
 		context.JSON(200, gin.H{
 			"code": 0,
