@@ -1,6 +1,7 @@
 import {Gender, Job} from "../constants";
 import {request} from "../utils/request";
 import {Emp} from "../constants/Emp";
+import {IDepart} from "./depart";
 
 export interface IEmp {
     ID: number;
@@ -12,6 +13,7 @@ export interface IEmp {
     image: string;
     job: Job;
     deptId: number;
+    dept: IDepart;
 }
 
 export const upgradeEmp = async (params: IEmp) => {

@@ -1,11 +1,11 @@
 export const Depart = {
     upgradeDepart: {
-        path: '/depart/upgrade',
+        path: '/depart/update',
         method: 'POST',
     },
     // 删除部门
     deleteDepart: {
-        path: '/depart/delete',
+        path: '/depart/remove',
         method: 'GET',
     },
     //查询id

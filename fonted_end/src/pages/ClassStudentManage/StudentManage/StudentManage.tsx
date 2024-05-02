@@ -1,58 +1,61 @@
 import React, {useEffect, useState} from 'react';
-import {Table, Input, Button, Space, Select, Modal, Form} from 'antd';
+import {Table, Input, Button, Space, Form} from 'antd';
 import UpdateStudent from "./UpdateStudent";
-import {getAllStudent, IStudent} from "../../../api/student";
-import {IClass} from "../../../api/class";
-
-const {Option} = Select;
+import {deleteStudent, getAllStudent, IStudent} from "../../../api/student";
 
 const StudentManage: React.FC = () => {
     // 假设这是从后端获取的学员数据
     const [students, setStudents] = useState<IStudent[]>([]);
+    const [selectedIds, setSelectedIds] = React.useState<number[]>([])
 
-    useEffect(() => {
-        // 在这里获取学员数据
+    const updateData = () => {
         getAllStudent().then((res) => {
             res.data.forEach((item: IStudent, index: number) => {
                 Object.setPrototypeOf(item, {key: item.ID})
             })
             setStudents(res.data);
         });
+    }
+
+    useEffect(() => {
+        updateData()
     }, []);
 
     // 搜索、新增、删除等函数的实现将依赖于具体的业务逻辑和后端API
-
     const handleSearch = (values: any) => {
-        // 实现搜索逻辑
-    };
-
-    const showAddModal = () => {
-        // 实现打开新增学员模态框的逻辑
-    };
-
-    const handleAddCancel = () => {
-        // 实现取消新增学员的逻辑
-    };
-
-    const handleDeleteSelected = () => {
-        // 实现批量删除学员的逻辑
     };
 
     const columns = [
+        {
+            title: '选择',
+            render: (_: unknown, record: IStudent) => (
+                <Space>
+                    <input type="checkbox" onChange={(event) => {
+                        if (event.target.checked) {
+                            setSelectedIds([...selectedIds, record.ID!])
+                        } else {
+                            setSelectedIds(selectedIds.filter(item => item !== record.ID))
+                        }
+                    }}/>
+                </Space>
+            ),
+        },
         {
             title: '姓名',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '学号',
-            dataIndex: 'studentId',
-            key: 'studentId',
-        },
-        {
             title: '班级',
             dataIndex: 'class',
             key: 'class',
+            render: (_: unknown, record: IStudent) => {
+                if (record.class) {
+                    return record.class.name
+                } else {
+                    return ""
+                }
+            }
         },
         {
             title: '性别',
@@ -66,32 +69,41 @@ const StudentManage: React.FC = () => {
         },
         {
             title: '最高学历',
-            dataIndex: 'degree',
-            key: 'degree',
+            dataIndex: 'education',
+            key: 'education',
         },
         {
             title: '违纪次数',
-            dataIndex: 'misconductCount',
-            key: 'misconductCount',
+            dataIndex: 'recordTimes',
+            key: 'recordTimes',
         },
         {
             title: '违纪扣分',
-            dataIndex: 'misconductPoints',
-            key: 'misconductPoints',
+            dataIndex: 'recordScore',
+            key: 'recordScore',
         },
         {
             title: '最后操作时间',
-            dataIndex: 'lastOpTime',
-            key: 'lastOpTime',
+            dataIndex: 'UpdatedAt',
+            key: '',
         },
         {
             title: '操作',
             key: 'operation',
-            render: (_: unknown, record: unknown) => (
+            render: (_: unknown, record: IStudent) => (
                 <Space>
-                    <UpdateStudent mode="edit" initValue={0}/>
+                    <UpdateStudent mode="edit" initValue={record} updateData={updateData}/>
                     <Button danger>违纪</Button>
-                    <Button danger>删除</Button>
+                    <Button danger
+                            onClick={() => {
+                                deleteStudent({id: record.ID!}).then((res) => {
+                                    // eslint-disable-next-line eqeqeq
+                                    if (res.code == 1) {
+                                        setStudents(students.filter((item) => item.ID !== record.ID))
+                                    }
+                                })
+                            }}
+                    >删除</Button>
                 </Space>
             ),
         },
@@ -103,29 +115,32 @@ const StudentManage: React.FC = () => {
             height: '100%',
             width: '100%',
         }}>
-            <Form layout="inline" onFinish={handleSearch}>
+            <Form layout="inline" onFinish={(values) => handleSearch(values)}>
                 <Form.Item label="学员姓名" name="name">
                     <Input placeholder="请输入学员姓名"/>
                 </Form.Item>
                 <Form.Item label="学号" name="studentId">
                     <Input placeholder="请输入学号"/>
                 </Form.Item>
-
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         查询
                     </Button>
                 </Form.Item>
-
-                <UpdateStudent mode={"add"} initValue={0}/>
+                <UpdateStudent mode={"add"} initValue={undefined} updateData={updateData}/>
+                <Button danger onClick={() => {
+                    selectedIds.forEach((id) => {
+                        deleteStudent({id}).then((res) => {
+                            if (res.code == 1) {
+                                setStudents(students.filter((item) => item.ID !== id))
+                            }
+                        })
+                    })
+                }}>批量删除</Button>
             </Form>
             <Table dataSource={students} columns={columns} rowKey="key" style={{
                 marginTop: '20px',
             }}/>
-            {/* 新增学员模态框 */}
-            <Modal title="添加学员" open={false} onCancel={handleAddCancel} footer={null}>
-                {/* 新增学员表单内容 */}
-            </Modal>
         </div>
     );
 };

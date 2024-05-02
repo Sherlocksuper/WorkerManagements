@@ -10,3 +10,20 @@ export enum Job {
     Research = 4,
     Counselor = 5
 }
+
+export const getJobName = (num: number): string => {
+    switch (num) {
+        case Job.HeadTeacher:
+            return '班主任';
+        case Job.Lecturer:
+            return '讲师';
+        case Job.Dean:
+            return '院长';
+        case Job.Research:
+            return '研究员';
+        case Job.Counselor:
+            return '辅导员';
+        default:
+            return '未知';
+    }
+}

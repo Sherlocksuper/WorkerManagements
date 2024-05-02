@@ -4,12 +4,12 @@ import {APIS} from "./url";
 
 export const Student = {
     upgradeStudent: {
-        path: '/student/upgrade',
+        path: '/student/update',
         method: 'POST',
     },
     // 删除学员
     deleteStudent: {
-        path: '/student/delete',
+        path: '/student/remove',
         method: 'GET',
     },
     //查询id

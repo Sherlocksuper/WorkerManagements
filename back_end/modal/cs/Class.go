@@ -9,4 +9,5 @@ type Class struct {
 	StartTime   string `json:"startTime"`
 	EndTime     string `json:"endTime"`
 	HeadTeacher string `json:"headTeacher"`
+	Students    []Student
 }

@@ -30,11 +30,11 @@ func (e EmpService) RemoveEmp(id string) error {
 }
 
 func (e EmpService) FindEmpById(id string, emp *modal.Emps) error {
-	config.IConfig.Db.First(&emp, id)
+	config.IConfig.Db.Preload("Depart").First(&emp, id)
 	return nil
 }
 
 func (e EmpService) FindAllEmp(emp *[]modal.Emps) error {
-	config.IConfig.Db.Find(&emp)
+	config.IConfig.Db.Preload("Depart").Find(&emp)
 	return nil
 }

@@ -1,31 +1,51 @@
-import React, {useState} from 'react';
-import {Modal, Form, Input, DatePicker, Select, Button, Upload} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, DatePicker, Form, Input, Modal, Select, Upload} from 'antd';
+import {Gender, getJobName} from "../../../constants";
+import {IEmp, upgradeEmp} from "../../../api/emp";
+import dayjs from "dayjs";
+import {getAllDepart, IDepart} from "../../../api/depart";
+import useMessage from "antd/lib/message/useMessage";
 
 const {Option} = Select;
-const {RangePicker} = DatePicker;
 
 interface IAddEmployeeModalProps {
     mode: "add" | "edit";
-    initValue?: unknown
+    initValue?: IEmp;
+    updateData: Function
 }
 
 const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                                                                 mode,
-                                                                initValue = 0
+                                                                initValue,
+                                                                updateData,
                                                             }) => {
     const [visible, setVisible] = useState(false);
+    const [messageApi, messageLocation] = useMessage()
+    const [departs, setDeparts] = useState([]);
 
+    useEffect(() => {
+        getAllDepart().then((res) => {
+            setDeparts(res.data);
+        });
+    }, []);
     // 模态框的标题
     const title = mode === "add" ? "新增员工" : "编辑员工";
+
+    const updateEmpo = (emp: IEmp) => {
+        upgradeEmp(emp).then((res) => {
+            if (res.code === 1) {
+                messageApi.success("成功")
+                handleCancel()
+                updateData()
+            } else {
+                messageApi.error("失败")
+            }
+        })
+    }
 
     // 模态框的可见性切换
     const showModal = () => {
         setVisible(true);
-    };
-
-    const handleOk = () => {
-        // 在这里实现模态框确认提交的逻辑
-        setVisible(false);
     };
 
     const handleCancel = () => {
@@ -33,8 +53,17 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
     };
 
     const onFinish = (values: any) => {
-        // 在这里实现表单提交的逻辑，比如向后端发送API请求
         console.log('Received values from form: ', values);
+        updateEmpo({
+            ...initValue,
+            username: values.username,
+            name: values.name,
+            gender: values.gender,
+            job: values.job,
+            entryDate: values.entryDate,
+            deptId: values.deptId,
+            image: values.image
+        } as IEmp)
     };
 
     const usernameRules = [
@@ -43,7 +72,6 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
             pattern: /^(?!.*\s).{2,20}$/,
             message: '用户名必须2-20字符，且不能包含空格!',
         },
-        // 这里可以添加一个检查用户名是否重复的规则
     ];
 
     const nameRules = [
@@ -62,7 +90,6 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
             <Modal
                 title={title}
                 open={visible}
-                onOk={handleOk}
                 onCancel={handleCancel}
                 cancelButtonProps={{style: {display: 'none'}}}
                 okButtonProps={{style: {display: 'none'}, htmlType: 'submit'}}
@@ -76,6 +103,7 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                         name="username"
                         label="用户名"
                         rules={usernameRules}
+                        initialValue={initValue?.username}
                     >
                         <Input placeholder="请输入用户名，2-20字符，不可重复"/>
                     </Form.Item>
@@ -83,6 +111,7 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                         name="name"
                         label="员工姓名"
                         rules={nameRules}
+                        initialValue={initValue?.name}
                     >
                         <Input placeholder="请输入员工姓名，2-10个字"/>
                     </Form.Item>
@@ -90,39 +119,51 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                         name="gender"
                         label="性别"
                         rules={[{required: true, message: '请选择性别!'}]}
+                        initialValue={initValue?.gender === Gender.Male ? "男" : "女"}
                     >
                         <Select placeholder="请选择">
-                            <Option value="male">男</Option>
-                            <Option value="female">女</Option>
+                            <Option value="1">男</Option>
+                            <Option value="2">女</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        name="position"
+                        name="job"
                         label="职位"
                         rules={[{required: true, message: '请选择职位!'}]}
+                        initialValue={getJobName(initValue?.job || 1)}
                     >
                         <Select placeholder="请选择">
-                            {/* 职位选项根据实际情况添加 */}
+                            <Option value="1">班主任</Option>
+                            <Option value="2">讲师</Option>
+                            <Option value="3">院长</Option>
+                            <Option value="4">研究员</Option>
+                            <Option value="5">辅导员</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        name="joinDate"
+                        name="entryDate"
                         label="入职日期"
                         rules={[{required: true, message: '请选择入职日期!'}]}
+                        initialValue={dayjs(initValue?.entryDate)}
                     >
-                        <RangePicker/>
+                        <DatePicker/>
                     </Form.Item>
                     <Form.Item
-                        name="department"
+                        name="deptId"
                         label="归属部门"
                         rules={[{required: true, message: '请选择归属部门!'}]}
+                        initialValue={initValue?.dept.name}
                     >
                         <Select placeholder="请选择">
-                            {/* 部门选项根据实际情况添加 */}
+                            {
+                                departs.map((depart: IDepart) =>
+                                    <Option value={depart.ID}>{depart.name}</Option>
+                                )
+                            }
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        name="avatar"
+                        name="image"
                         label="图像"
                         valuePropName="fileList"
                         getValueFromEvent={(event, prevFileList) => prevFileList}

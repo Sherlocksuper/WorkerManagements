@@ -11,7 +11,8 @@ type Emps struct {
 	Gender    Gender `json:"gender"`    //性别
 	Image     string `json:"image"`
 	Job       Job    `json:"job"`
-	DeptID    uint   `json:"deptId"`
+	DepartID  uint   `json:"deptId"`
+	Depart    Depart `json:"dept" gorm:"foreignKey:DepartID"`
 }
 
 // Gender Gender枚举值

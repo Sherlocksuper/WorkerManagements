@@ -1,10 +1,10 @@
 export const Emp = {
     upgradeEmp: {
-        path: "/emp/upgrade",
+        path: "/emp/update",
         method: "POST"
     },
     deleteEmp: {
-        path: "/emp/delete",
+        path: "/emp/remove",
         method: "GET"
     },
     queryAllEmp: {

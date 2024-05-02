@@ -15,7 +15,7 @@ export const deleteDepart = async (params: { id: number }) => {
     const url = Depart.deleteDepart.path + `/${params.id}`
     const api = {...Depart.deleteDepart}
     api.path = url
-    return await request(api, params)
+    return await request(api)
 }
 
 export const getAllDepart = async () => {
@@ -26,6 +26,6 @@ export const getDepartById = async (params: { id: number }) => {
     const url = Depart.queryDepart.path + `/${params.id}`
     const api = {...Depart.queryDepart}
     api.path = url
-    return await request(api, params)
+    return await request(api)
 }
 

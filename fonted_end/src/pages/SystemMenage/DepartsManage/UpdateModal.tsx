@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import {Modal, Form, Input, Button} from 'antd';
+import {IDepart, upgradeDepart} from "../../../api/depart";
 
 interface IAddDepartmentModalProps {
     mode: "add" | "edit";
-    initValue?: unknown
+    initValue?: IDepart;
+    updateData: Function
 }
 
 const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
                                                                     mode,
-                                                                    initValue = 0
+                                                                    initValue, updateData
+
                                                                 }) => {
     const [visible, setVisible] = useState(false);
 
@@ -20,18 +23,27 @@ const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
         setVisible(true);
     };
 
-    const handleOk = () => {
-        // 在这里实现模态框确认提交的逻辑
-        setVisible(false);
-    };
+    const updateDepart = (newDepart: IDepart) => {
+        upgradeDepart(newDepart).then((res) => {
+            if (res.code === 1) {
+                window.alert("更新成功！")
+                setVisible(false);
+                updateData()
+            } else {
+                window.alert("更新失败！")
+            }
+        })
+    }
 
     const handleCancel = () => {
         setVisible(false);
     };
 
     const onFinish = (values: any) => {
-        // 在这里实现表单提交的逻辑，比如向后端发送API请求
-        console.log('Received values from form: ', values);
+        updateDepart({
+            ...initValue,
+            name: values.name
+        } as IDepart)
     };
 
     const departmentNameRules = [
@@ -50,7 +62,6 @@ const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
             <Modal
                 title={title}
                 open={visible}
-                onOk={handleOk}
                 onCancel={handleCancel}
                 cancelButtonProps={{style: {display: 'none'}}}
                 okButtonProps={{style: {display: 'none'}, htmlType: 'submit'}}
@@ -61,12 +72,14 @@ const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
                     // 初始值可以在这里设置，如果需要的话
                 >
                     <Form.Item
-                        name="departmentName"
+                        name="name"
                         label="部门名称"
                         rules={departmentNameRules}
+                        initialValue={initValue?.name}
                     >
                         <Input placeholder="请输入部门名称，长度为2-10位"/>
                     </Form.Item>
+
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
                             保存

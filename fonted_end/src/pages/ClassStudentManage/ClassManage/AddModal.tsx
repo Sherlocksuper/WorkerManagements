@@ -2,36 +2,39 @@ import React, {useState} from 'react';
 import {Modal, Form, Input, DatePicker, Select, Button} from 'antd';
 import {IClass, updateClass} from "../../../api/class";
 import {randomUUID} from "crypto";
+import useMessage from "antd/lib/message/useMessage";
+import dayjs from "dayjs";
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 
 interface IAddClassModalProps {
     mode: "add" | "edit";
-    initValue?: IClass
+    initValue?: IClass;
+    updateData: () => void;
 }
 
 const AddClassModal: React.FC<IAddClassModalProps> = ({
                                                           mode,
-                                                          initValue
+                                                          initValue,
+                                                          updateData
                                                       }) => {
-
     const [visible, setVisible] = useState(false);
     const [key, setKey] = useState<string>("");
+    const [messageApi, contextHolder] = useMessage()
 
     // 模态框的标题
     const title = mode === "add" ? "新增班级" : "编辑班级";
 
-    const createClass = () => {
-        updateClass({
-            ID: 0,
-            name: '2024第01期10班',
-            room: '教室A',
-            startTime: '2024-01-01',
-            endTime: '2024-06-01',
-            headTeacher: '老师A'
-        }).then(response => {
-            console.log(response.code)
+    const createClass = (newClass: IClass) => {
+        updateClass(newClass).then(response => {
+            if (response.code === 1) {
+                messageApi.success("添加成功")
+                handleCancel();
+                updateData()
+            } else {
+                messageApi.error("添加失败")
+            }
         })
     }
 
@@ -41,11 +44,6 @@ const AddClassModal: React.FC<IAddClassModalProps> = ({
         setVisible(true);
     };
 
-    const handleOk = () => {
-        // 在这里实现模态框确认提交的逻辑
-        setVisible(false);
-    };
-
     const handleCancel = () => {
         setVisible(false);
     };
@@ -53,11 +51,10 @@ const AddClassModal: React.FC<IAddClassModalProps> = ({
     return (
         <div>
             <Button type="primary" onClick={showModal}>{title}</Button>
-
+            {contextHolder}
             <Modal
                 title={title}
                 open={visible}
-                onOk={handleOk}
                 onCancel={handleCancel}
                 cancelButtonProps={{style: {display: 'none'}}}
                 okButtonProps={{style: {display: 'none'}, htmlType: 'submit'}}
@@ -65,9 +62,17 @@ const AddClassModal: React.FC<IAddClassModalProps> = ({
             >
                 <Form
                     layout="vertical"
-                    // 在这里添加表单的onFinish处理函数
                     onFinish={(values) => {
-                        console.log(values);
+                        console.log(values.startTime.toString())
+                        createClass({
+                            ...initValue,
+                            ID: initValue?.ID,
+                            name: values.name,
+                            room: values.room,
+                            startTime: values.startTime.format("YYYY-MM-DD"),
+                            endTime: values.startTime.format("YYYY-MM-DD"),
+                            headTeacher: values.headTeacher,
+                        })
                     }}
                 >
                     <Form.Item
@@ -89,18 +94,18 @@ const AddClassModal: React.FC<IAddClassModalProps> = ({
                     <Form.Item
                         label="开课时间"
                         name="startTime"
-                        initialValue={initValue?.startTime}
                         rules={[{required: true, message: '请选择开课时间!'}]}
+                        initialValue={dayjs(initValue?.startTime)}
                     >
-                        <RangePicker/>
+                        <DatePicker/>
                     </Form.Item>
                     <Form.Item
                         label="结课时间"
                         name="endTime"
-                        initialValue={initValue?.endTime}
                         rules={[{required: true, message: '请选择结课时间!'}]}
+                        initialValue={dayjs(initValue?.endTime)}
                     >
-                        <RangePicker/>
+                        <DatePicker/>
                     </Form.Item>
                     <Form.Item
                         label="班主任"

@@ -2,7 +2,7 @@ import {request} from "../utils/request";
 import {Class} from "../constants/Class";
 
 export interface IClass {
-    ID: number;
+    ID?: number;
     name: string;
     room: string;
     startTime: string;
@@ -19,7 +19,7 @@ export const deleteClass = async (params: { id: number }) => {
     const url = Class.deleteClass.path + `/${params.id}`
     const api = {...Class.deleteClass}
     api.path = url
-    return await request(api, params)
+    return await request(api)
 }
 
 export const getAllClass = async () => {

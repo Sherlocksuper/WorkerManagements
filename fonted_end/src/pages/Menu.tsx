@@ -2,7 +2,7 @@ import React from 'react';
 import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 import type {MenuProps} from 'antd';
 import {Menu} from 'antd';
-import {useNavigate} from "react-router";
+import {useLocation, useNavigate, useNavigation} from "react-router";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -52,10 +52,13 @@ const items: MenuItem[] = [
 
 const MyMenu: React.FC = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const onClick: MenuProps['onClick'] = (e) => {
-        console.log("key:"+e.key)
+        console.log("key:" + e.key)
+        console.log(location.pathname)
         navigate(e.key, {replace: true});
     };
+
 
     return (
         <Menu
@@ -65,6 +68,7 @@ const MyMenu: React.FC = () => {
             defaultOpenKeys={['sub1']}
             mode="inline"
             items={items}
+            selectedKeys={[location.pathname]}
         />
     );
 };

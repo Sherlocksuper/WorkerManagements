@@ -7,7 +7,8 @@ import "gorm.io/gorm"
 type Student struct {
 	gorm.Model
 	Name        string `json:"name"`
-	ClassID     string `json:"class"`
+	ClassID     uint   `json:"classId"`
+	Class       Class  `json:"class" gorm:"foreignKey:ClassID"`
 	Gender      Gender `json:"gender"`
 	Phone       string `json:"phone"`
 	Education   string `json:"education"`

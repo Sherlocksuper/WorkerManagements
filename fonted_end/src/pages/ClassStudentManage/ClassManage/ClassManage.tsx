@@ -1,10 +1,10 @@
 import {Button, Input, Space, Table} from "antd";
 import AddModal from "./AddModal";
 import {useEffect, useState} from "react";
-import {getAllClass, IClass} from "../../../api/class";
+import {deleteClass, getAllClass, IClass} from "../../../api/class";
+import useMessage from "antd/lib/message/useMessage";
 
 const columns = [
-    //key
     {
         title: '序号',
         dataIndex: 'ID',
@@ -40,25 +40,48 @@ const columns = [
         dataIndex: 'operation',
         key: 'operation',
         render: (_: unknown, record: IClass) => (
-            <Space size="middle">
-                <AddModal mode={"edit"} initValue={record}/>
-                <Button>删除</Button>
-            </Space>
-        ),
+            <div></div>
+        )
     },
 ]
 
 const ClassManage = () => {
     const [classData, setClassData] = useState<IClass[]>([])
+    const [messageApi, contextHolder] = useMessage()
 
-    useEffect(() => {
+    const updateData = () => {
         getAllClass().then(res => {
             res.data.forEach((item: IClass, index: number) => {
                 Object.setPrototypeOf(item, {key: item.ID})
             })
             setClassData(res.data)
         })
+    }
+
+    useEffect(() => {
+        updateData()
     }, [])
+
+    columns[columns.length - 1].render = (_: unknown, record: IClass) => (
+        <Space size="middle">
+            <AddModal mode={"edit"} initValue={record} updateData={updateData}/>
+            <Button onClick={() => {
+                onDelete(record.ID!)
+            }}>删除</Button>
+        </Space>
+    )
+
+    const onDelete = (id: number) => {
+        if (!window.confirm("确定删除吗？")) return
+        deleteClass({id: id}).then(res => {
+            if (res.code == 1) {
+                setClassData(classData.filter(item => item.ID !== id))
+                messageApi.success("删除成功")
+            } else {
+                messageApi.error("删除失败")
+            }
+        })
+    }
 
     return <div style={{
         width: '100%',
@@ -66,6 +89,7 @@ const ClassManage = () => {
         overflow: 'auto',
         padding: '20px',
     }}>
+        {contextHolder}
         <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -76,7 +100,7 @@ const ClassManage = () => {
                 <Button type="primary" style={{marginBottom: '20px'}}>查询班级</Button>
             </div>
 
-            <AddModal mode={"add"} initValue={undefined}/>
+            <AddModal mode={"add"} initValue={undefined} updateData={updateData}/>
         </div>
         <Table dataSource={classData} columns={columns} style={{
             width: '100%',

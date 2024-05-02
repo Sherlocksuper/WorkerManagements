@@ -1,15 +1,17 @@
 import {Student} from "../constants/Student";
 import {request} from "../utils/request";
+import {IClass} from "./class";
 
 export interface IStudent {
-    ID: number;
+    ID?: number;
     name: string;
-    class: string;
+    classId: string;
     gender: string;
     phone: string;
     education: string;
     recordTimes: number;
-    recordScore: number;
+    recordScore?: number;
+    class?: IClass;
 }
 
 export const upgradeStudent = async (params: IStudent) => {
@@ -21,7 +23,7 @@ export const deleteStudent = async (params: { id: number }) => {
     const url = Student.deleteStudent.path + `/${params.id}`
     const api = {...Student.deleteStudent}
     api.path = url
-    return await request(api, params)
+    return await request(api)
 }
 
 export const getAllStudent = async () => {

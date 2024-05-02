@@ -29,11 +29,11 @@ func (s StudentService) RemoveStudent(id string) error {
 }
 
 func (s StudentService) FindStudentById(id string, stu *modal.Student) error {
-	config.IConfig.Db.First(&stu, id)
+	config.IConfig.Db.Preload("Class").First(&stu, id)
 	return nil
 }
 
 func (s StudentService) FindAllStudent(stu *[]modal.Student) error {
-	config.IConfig.Db.Find(&stu)
+	config.IConfig.Db.Preload("Class").Find(&stu)
 	return nil
 }

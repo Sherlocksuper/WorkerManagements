@@ -4,12 +4,12 @@ export default 1
 
 export const Class = {
     upgradeClass: {
-        path: '/class/upgrade',
+        path: '/class/update',
         method: 'POST',
     },
     // 删除班级
     deleteClass: {
-        path: '/class/delete',
+        path: '/class/remove',
         method: 'GET',
     },
     //查询id
