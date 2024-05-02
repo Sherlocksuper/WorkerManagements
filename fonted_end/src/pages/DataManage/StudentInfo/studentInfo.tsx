@@ -2,6 +2,7 @@ import {useEffect, useRef} from "react";
 import {getAllEmp, IEmp} from "../../../api/emp";
 import * as echarts from "echarts";
 import {Gender} from "../../../constants";
+import {getAllStudent} from "../../../api/student";
 
 const options1 = {
     title: {
@@ -39,7 +40,7 @@ const options1 = {
 };
 
 
-const EmpInfo = () => {
+const StudentInfo = () => {
 
     const chart1ref = useRef(null);
 
@@ -47,7 +48,7 @@ const EmpInfo = () => {
 
         let chat1 = echarts.init(chart1ref.current);
 
-        getAllEmp({}).then((res) => {
+        getAllStudent({}).then((res) => {
             let data: IEmp[] = res.data;
 
             data.forEach((item: IEmp) => {
@@ -81,4 +82,4 @@ const EmpInfo = () => {
     );
 }
 
-export default EmpInfo;
+export default StudentInfo;

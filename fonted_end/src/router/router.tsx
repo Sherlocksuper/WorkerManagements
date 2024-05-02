@@ -9,6 +9,7 @@ import DepartsManage from "../pages/SystemMenage/DepartsManage/DepartsManage";
 import ErrorPage from "../pages/Error";
 import Home from "../pages/Home";
 import EmpManage from "../pages/SystemMenage/EmpManage/EmpManage";
+import StudentInfo from "../pages/DataManage/StudentInfo/studentInfo";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
             {
                 path: "empStatistics",
                 element: <EmpInfo/>
+            },
+            {
+                path: "studentStatistics",
+                element: <StudentInfo/>
             },
 
         ]

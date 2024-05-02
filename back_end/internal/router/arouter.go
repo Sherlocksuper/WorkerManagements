@@ -7,6 +7,7 @@ func ConfigRouter(router *gin.Engine) {
 	RegisterEmp(router)
 	RegisterClassRouter(router)
 	RegisterStudentRouter(router)
+	RegisterAuth(router)
 
 	//配置跨域
 	router.Use(func(c *gin.Context) {

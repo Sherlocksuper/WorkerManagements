@@ -46,6 +46,10 @@ const items: MenuItem[] = [
                 key: '/empStatistics',
                 label: '员工信息统计',
             },
+            {
+                key: '/studentStatistics',
+                label: '学员信息统计',
+            }
         ],
     },
 ];
