@@ -9,10 +9,3 @@ export interface API {
 export interface APIS {
     [key: string]: API;
 }
-
-
-export const Apis: {
-    [key: string]: APIS;
-} = {
-    Stu: Student
-}

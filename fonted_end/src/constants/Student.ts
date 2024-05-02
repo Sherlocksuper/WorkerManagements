@@ -2,25 +2,26 @@ import exp from "constants";
 import {APIS} from "./url";
 
 
-export const Student: APIS = {
-    addStudent: {
-        path: '/student',
+export const Student = {
+    upgradeStudent: {
+        path: '/student/upgrade',
         method: 'POST',
     },
     // 删除学员
     deleteStudent: {
-        path: '/student',
-        method: 'DELETE',
+        path: '/student/delete',
+        method: 'GET',
     },
-    // 编辑学员
-    editStudent: {
-        path: '/student',
-        method: 'PUT',
+    //查询id
+    queryStudent: {
+        path: '/student/findbyid',
+        method: 'GET',
     },
-    // 批量删除学员
-    deleteSelectedStudent: {
-        path: '/student',
-        method: 'DELETE',
+
+    // 查询全部
+    queryAllStudent: {
+        path: '/student/findall',
+        method: 'GET',
     },
 }
 

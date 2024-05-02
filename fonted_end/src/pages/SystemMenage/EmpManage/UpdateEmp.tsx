@@ -64,6 +64,8 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                 open={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                cancelButtonProps={{style: {display: 'none'}}}
+                okButtonProps={{style: {display: 'none'}, htmlType: 'submit'}}
             >
                 <Form
                     layout="vertical"

@@ -28,6 +28,7 @@ func (c *Config) initConfig() {
 		Port:     os.Getenv("MYSQL_PORT"),
 		User:     os.Getenv("MYSQL_USER"),
 		Password: os.Getenv("MYSQL_PASSWORD"),
+		DBName:   os.Getenv("MYSQL_DATABASE"),
 	}
 
 	c.Db, _ = gorm.Open(mysql.Open(IConfig.Mysql.GetDSN()), &gorm.Config{})

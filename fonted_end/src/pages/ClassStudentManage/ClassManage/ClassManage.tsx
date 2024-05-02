@@ -1,65 +1,24 @@
 import {Button, Input, Space, Table} from "antd";
 import AddModal from "./AddModal";
-
-//序号
-// 班级名称
-// 班级教室
-// 开课时间
-// 结课时间
-// 班主任
-// 操作
-
-interface DataType {
-    key: string;
-    className: string;
-    classRoom: string;
-    startTime: string;
-    endTime: string;
-    headTeacher: string;
-}
-
-const dataSource: DataType[] = [
-    {
-        key: '1',
-        className: '初一一班',
-        classRoom: '101',
-        startTime: '2021-09-01',
-        endTime: '2022-06-30',
-        headTeacher: '张三',
-    },
-    {
-        key: '2',
-        className: '初一二班',
-        classRoom: '102',
-        startTime: '2021-09-01',
-        endTime: '2022-06-30',
-        headTeacher: '李四',
-    },
-    {
-        key: '3',
-        className: '初一三班',
-        classRoom: '103',
-        startTime: '2021-09-01',
-        endTime: '2022-06-30',
-        headTeacher: '王五',
-    },
-];
+import {useEffect, useState} from "react";
+import {getAllClass, IClass} from "../../../api/class";
 
 const columns = [
+    //key
     {
         title: '序号',
-        dataIndex: 'key',
-        key: 'key',
+        dataIndex: 'ID',
+        key: 'ID',
     },
     {
         title: '班级名称',
-        dataIndex: 'className',
-        key: 'className',
+        dataIndex: 'name',
+        key: 'name',
     },
     {
         title: '班级教室',
-        dataIndex: 'classRoom',
-        key: 'classRoom',
+        dataIndex: 'room',
+        key: 'room',
     },
     {
         title: '开课时间',
@@ -80,7 +39,7 @@ const columns = [
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
-        render: (_: unknown, record: DataType) => (
+        render: (_: unknown, record: IClass) => (
             <Space size="middle">
                 <AddModal mode={"edit"} initValue={record}/>
                 <Button>删除</Button>
@@ -90,6 +49,17 @@ const columns = [
 ]
 
 const ClassManage = () => {
+    const [classData, setClassData] = useState<IClass[]>([])
+
+    useEffect(() => {
+        getAllClass().then(res => {
+            res.data.forEach((item: IClass, index: number) => {
+                Object.setPrototypeOf(item, {key: item.ID})
+            })
+            setClassData(res.data)
+        })
+    }, [])
+
     return <div style={{
         width: '100%',
         height: '100%',
@@ -106,9 +76,9 @@ const ClassManage = () => {
                 <Button type="primary" style={{marginBottom: '20px'}}>查询班级</Button>
             </div>
 
-            <AddModal mode={"add"} initValue={0}/>
+            <AddModal mode={"add"} initValue={undefined}/>
         </div>
-        <Table dataSource={dataSource} columns={columns} style={{
+        <Table dataSource={classData} columns={columns} style={{
             width: '100%',
             height: '100%',
             overflow: 'auto',

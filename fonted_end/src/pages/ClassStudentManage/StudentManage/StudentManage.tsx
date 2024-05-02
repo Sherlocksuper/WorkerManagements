@@ -1,27 +1,24 @@
-import React, {useState} from 'react';
-import {Table, Input, Button, Space, Select, DatePicker, Modal, Form} from 'antd';
-import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {Table, Input, Button, Space, Select, Modal, Form} from 'antd';
 import UpdateStudent from "./UpdateStudent";
+import {getAllStudent, IStudent} from "../../../api/student";
+import {IClass} from "../../../api/class";
 
 const {Option} = Select;
 
 const StudentManage: React.FC = () => {
     // 假设这是从后端获取的学员数据
-    const [students, setStudents] = useState([
-        {
-            key: '1',
-            name: '张三',
-            studentId: 'A220505001',
-            class: '2024第01期10班',
-            gender: '男',
-            phone: '1880909xxxx',
-            degree: '本科',
-            misconductCount: 1,
-            misconductPoints: 5,
-            lastOpTime: '2022-08-01 12:00:00',
-        },
-        // ...其他学员数据
-    ]);
+    const [students, setStudents] = useState<IStudent[]>([]);
+
+    useEffect(() => {
+        // 在这里获取学员数据
+        getAllStudent().then((res) => {
+            res.data.forEach((item: IStudent, index: number) => {
+                Object.setPrototypeOf(item, {key: item.ID})
+            })
+            setStudents(res.data);
+        });
+    }, []);
 
     // 搜索、新增、删除等函数的实现将依赖于具体的业务逻辑和后端API
 
@@ -103,6 +100,8 @@ const StudentManage: React.FC = () => {
     return (
         <div className="student-management" style={{
             padding: '20px',
+            height: '100%',
+            width: '100%',
         }}>
             <Form layout="inline" onFinish={handleSearch}>
                 <Form.Item label="学员姓名" name="name">

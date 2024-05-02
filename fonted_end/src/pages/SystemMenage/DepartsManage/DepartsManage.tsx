@@ -10,32 +10,12 @@
 // 操作
 
 import {Button, Space, Table} from "antd";
-import React from "react";
+import React, {useEffect} from "react";
 import AddDepartmentModal from "./UpdateModal";
+import {getAllDepart, IDepart} from "../../../api/depart";
+import {getAllEmp} from "../../../api/emp";
+import {IClass} from "../../../api/class";
 
-interface DataType {
-    key: string;
-    departmentName: string;
-    lastOperationTime: string;
-}
-
-const dataSource: DataType[] = [
-    {
-        key: '1',
-        departmentName: '市场部',
-        lastOperationTime: '2021-09-01',
-    },
-    {
-        key: '2',
-        departmentName: '研发部',
-        lastOperationTime: '2021-09-01',
-    },
-    {
-        key: '3',
-        departmentName: '人事部',
-        lastOperationTime: '2021-09-01',
-    },
-];
 
 const columns = [
     {
@@ -57,7 +37,7 @@ const columns = [
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
-        render: (_: unknown, record: DataType) => (
+        render: (_: unknown, record: IDepart) => (
             <Space>
                 <AddDepartmentModal mode="edit" initValue={record}/>
                 <Button type="primary" danger>删除</Button>
@@ -67,6 +47,21 @@ const columns = [
 ];
 
 const DepartsManage: React.FC = () => {
+
+    const [departs, setDeparts] = React.useState<IDepart[]>([])
+
+    useEffect(() => {
+        // 这里调用后端API获取部门数据
+        getAllDepart().then(res => {
+            console.log(res.data)
+            res.data.forEach((item: IDepart, index: number) => {
+                Object.setPrototypeOf(item, {key: item.ID})
+            })
+            setDeparts(res.data)
+        })
+    }, [])
+
+
     return (
         <div style={{
             width: "100%",
@@ -76,7 +71,7 @@ const DepartsManage: React.FC = () => {
             <div>
                 <AddDepartmentModal mode={"add"} initValue={0}/>
             </div>
-            <Table dataSource={dataSource} columns={columns} style={{
+            <Table dataSource={departs} columns={columns} style={{
                 width: '100%',
                 height: '100%',
                 overflow: 'auto',

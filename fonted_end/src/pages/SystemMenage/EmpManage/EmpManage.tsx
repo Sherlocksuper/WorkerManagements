@@ -1,23 +1,23 @@
-import React from 'react';
-import {Table, Input, Button, Space, DatePicker, Form, Modal, Upload} from 'antd';
-import {MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {Table, Input, Button, Space, DatePicker, Form, Modal} from 'antd';
+import {MinusCircleOutlined} from '@ant-design/icons';
 import AddEmployeeModal from "./UpdateEmp";
+import {getAllEmp, IEmp} from "../../../api/emp";
 
 const {RangePicker} = DatePicker;
 
 const EmpManage: React.FC = () => {
     // 假设这是从后端获取的员工数据
-    const employees = [
-        {
-            key: '1',
-            name: '赵敏',
-            gender: '女',
-            position: '班主任',
-            joinDate: '2008-12-18',
-            lastOpTime: '2022-07-22 12:05:20',
-        },
-        // ...其他员工数据
-    ];
+    const [employees, setEmployees] = useState<IEmp[]>([]);
+
+    useEffect(() => {
+        getAllEmp().then((res) => {
+            res.data.forEach((item: IEmp, index: number) => {
+                Object.setPrototypeOf(item, {key: item.ID})
+            })
+            setEmployees(res.data);
+        });
+    }, []);
 
     // 搜索、新增、删除等函数的实现将依赖于具体的业务逻辑和后端API
 
@@ -25,9 +25,6 @@ const EmpManage: React.FC = () => {
         // 实现搜索逻辑
     };
 
-    const showAddModal = () => {
-        // 实现打开新增员工模态框的逻辑
-    };
 
     const handleAddCancel = () => {
         // 实现取消新增员工的逻辑

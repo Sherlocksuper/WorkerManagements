@@ -46,6 +46,8 @@ const AddStudentModal: React.FC<IAddStudentModalProps> = ({
                 open={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                cancelButtonProps={{style: {display: 'none'}}}
+                okButtonProps={{style: {display: 'none'}, htmlType: 'submit'}}
             >
                 <Form
                     layout="vertical"

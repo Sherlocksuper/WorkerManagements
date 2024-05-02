@@ -4,7 +4,9 @@ import "github.com/gin-gonic/gin"
 
 func ConfigRouter(router *gin.Engine) {
 	RegisterDepart(router)
-	RegisterEmps(router)
+	RegisterEmp(router)
+	RegisterClassRouter(router)
+	RegisterStudentRouter(router)
 
 	//配置跨域
 	router.Use(func(c *gin.Context) {
