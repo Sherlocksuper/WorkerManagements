@@ -51,28 +51,35 @@ const EmpManage: React.FC = () => {
                 </Space>
         },
         {
-            title: '姓名',
+            title: '客户姓名',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '性别',
+            title: '交易种类',
             dataIndex: 'gender',
             key: 'gender',
+            render: (data: number) => {
+                if (data === 1) {
+                    return "零售"
+                } else {
+                    return "批发"
+                }
+            }
         },
         {
-            title: '职位',
+            title: '购买物品',
             dataIndex: 'position',
             key: 'position',
             render: (_: unknown, record: IEmp) => getJobName(record.job),
         },
         {
-            title: '入职日期',
+            title: '交易日期',
             dataIndex: 'CreatedAt',
             key: 'CreatedAt',
         },
         {
-            title: '最后操作时间',
+            title: '最近更新日期',
             dataIndex: 'UpdatedAt',
             key: 'UpdatedAt',
         },
@@ -101,13 +108,13 @@ const EmpManage: React.FC = () => {
             padding: '20px',
         }}>
             <Form layout="inline" onFinish={handleSearch}>
-                <Form.Item label="姓名" name="name">
-                    <Input placeholder="请输入员工姓名"/>
+                <Form.Item label="客户" name="name">
+                    <Input placeholder="请输入客户姓名"/>
                 </Form.Item>
-                <Form.Item label="性别" name="gender">
+                <Form.Item label="交易种类" name="gender">
                     <Select>
-                        <Option value="1">男</Option>
-                        <Option value="2">女</Option>
+                        <Option value="1">零售</Option>
+                        <Option value="2">批发</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item>

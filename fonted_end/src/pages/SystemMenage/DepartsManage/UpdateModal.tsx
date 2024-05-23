@@ -16,7 +16,7 @@ const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
     const [visible, setVisible] = useState(false);
 
     // 模态框的标题
-    const title = mode === "add" ? "新增部门" : "编辑部门";
+    const title = mode === "add" ? "新增客户" : "编辑客户";
 
     // 模态框的可见性切换
     const showModal = () => {
@@ -47,10 +47,10 @@ const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
     };
 
     const departmentNameRules = [
-        {required: true, message: '请输入部门名称!'},
+        {required: true, message: '请输入供货商名称!'},
         {
             pattern: /^(.{2,10})$/,
-            message: '部门名称长度必须在2-10位之间!',
+            message: '供货商名称长度必须在2-10位之间!',
         },
     ];
 
@@ -69,15 +69,14 @@ const AddDepartmentModal: React.FC<IAddDepartmentModalProps> = ({
                 <Form
                     layout="vertical"
                     onFinish={onFinish}
-                    // 初始值可以在这里设置，如果需要的话
                 >
                     <Form.Item
                         name="name"
-                        label="部门名称"
+                        label="供货商名称"
                         rules={departmentNameRules}
                         initialValue={initValue?.name}
                     >
-                        <Input placeholder="请输入部门名称，长度为2-10位"/>
+                        <Input placeholder="请输入供货商，长度为2-10位"/>
                     </Form.Item>
 
                     <Form.Item>

@@ -9,31 +9,31 @@ type MenuItem = Required<MenuProps>['items'][number];
 const items: MenuItem[] = [
     {
         key: 'sub1',
-        label: '班级学员管理',
+        label: '仓库管理',
         type: 'group',
         children: [
             {
                 key: '/classManage',
-                label: '班级管理',
+                label: '仓库管理',
             },
             {
                 key: '/studentManage',
-                label: '学员管理',
+                label: '订单管理',
             },
         ],
     },
     {
         key: 'sub2',
-        label: '系统信息管理',
+        label: '客户管理',
         type: 'group',
         children: [
             {
                 key: '/departsManage',
-                label: '部门管理',
+                label: '供货商',
             },
             {
                 key: '/empManage',
-                label: '员工管理',
+                label: '客户',
             },
         ],
     },
@@ -42,13 +42,13 @@ const items: MenuItem[] = [
         label: '数据统计管理',
         type: 'group',
         children: [
-            {
-                key: '/empStatistics',
-                label: '员工信息统计',
-            },
+            // {
+            //     key: '/empStatistics',
+            //     label: '订单信息统计',
+            // },
             {
                 key: '/studentStatistics',
-                label: '学员信息统计',
+                label: '客户信息统计',
             }
         ],
     },

@@ -28,7 +28,7 @@ const AddStudentModal: React.FC<IAddStudentModalProps> = ({
             })
         }, [])
 
-        const title = mode === "add" ? "新增学员" : "编辑学员";
+        const title = mode === "add" ? "新增订单" : "编辑订单";
 
         const updateStudent = (params: IStudent) => {
             // 在这里实现学员信息更新的逻辑
@@ -86,47 +86,43 @@ const AddStudentModal: React.FC<IAddStudentModalProps> = ({
                     >
                         <Form.Item
                             name="name"
-                            label="姓名"
-                            rules={[{required: true, message: '请输入姓名!'}]}
+                            label="订单名称"
+                            rules={[{required: true, message: '请输入订单名称!'}]}
                             initialValue={initValue?.name}
                         >
-                            <Input placeholder="请输入姓名"/>
+                            <Input placeholder="请输入订单名称"/>
                         </Form.Item>
                         <Form.Item
                             name="gender"
-                            label="性别"
-                            rules={[{required: true, message: '请选择性别!'}]}
+                            label="订单类别"
+                            rules={[{required: true, message: '请选择订单类别!'}]}
                             initialValue={initValue?.gender}
                         >
                             <Select placeholder="请选择">
-                                <Option value="1">男</Option>
-                                <Option value="2">女</Option>
+                                <Option value="1">零售</Option>
+                                <Option value="2">批发</Option>
                             </Select>
                         </Form.Item>
                         <Form.Item
                             name="phone"
-                            label="手机号"
-                            rules={[{required: true, message: '请输入手机号!'}]}
+                            label="订单编号"
+                            rules={[{required: true, message: '请输入订单编号!'}]}
                             initialValue={initValue?.phone}
                         >
-                            <Input placeholder="请输入手机号"/>
+                            <Input placeholder="请输入订单编号"/>
                         </Form.Item>
                         <Form.Item
-                            name="education"
-                            label="最高学历"
-                            rules={[{required: true, message: '请选择最高学历!'}]}
+                            name="value"
+                            label="价格"
+                            rules={[{required: true, message: '请输入价格!'}]}
                             initialValue={initValue?.education}
                         >
-                            <Select placeholder="请选择">
-                                <Option value="highschool">高中</Option>
-                                <Option value="associate">大专</Option>
-                                <Option value="bachelor">本科</Option>
-                            </Select>
+                            <Input placeholder="请输入价格"/>
                         </Form.Item>
                         <Form.Item
                             name="class"
-                            label="所属班级"
-                            rules={[{required: true, message: '请选择所属班级!'}]}
+                            label="所属仓库"
+                            rules={[{required: true, message: '请选择所属仓库!'}]}
                             initialValue={initValue?.class}
                         >
                             <Select placeholder="请选择">

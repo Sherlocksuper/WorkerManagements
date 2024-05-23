@@ -14,15 +14,13 @@ export enum Job {
 export const getJobName = (num: unknown): string => {
     switch (num) {
         case Job.HeadTeacher:
-            return '班主任';
+            return '棒棒糖';
         case Job.Lecturer:
-            return '讲师';
+            return '鞋子';
         case Job.Dean:
-            return '院长';
+            return '上衣';
         case Job.Research:
-            return '研究员';
-        case Job.Counselor:
-            return '辅导员';
+            return '裤子';
         default:
             return num as string;
     }

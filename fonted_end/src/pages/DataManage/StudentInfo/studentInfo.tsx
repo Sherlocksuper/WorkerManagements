@@ -6,7 +6,7 @@ import {getAllStudent} from "../../../api/student";
 
 const options1 = {
     title: {
-        text: '员工统计',
+        text: '订单统计',
         left: 'center'
     },
     tooltip: {
@@ -22,8 +22,8 @@ const options1 = {
             type: 'pie',
             radius: '50%',
             data: [
-                {value: 0, name: '男'},
-                {value: 0, name: '女'},
+                {value: 0, name: '零售'},
+                {value: 0, name: '批发'},
             ] as {
                 value: number;
                 name: string;

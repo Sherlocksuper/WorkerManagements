@@ -11,29 +11,36 @@ const columns = [
         key: 'ID',
     },
     {
-        title: '班级名称',
+        title: '仓库名称',
         dataIndex: 'name',
         key: 'name',
     },
     {
-        title: '班级教室',
+        title: '仓库编号',
         dataIndex: 'room',
         key: 'room',
     },
     {
-        title: '开课时间',
+        title: '仓库建立时间',
         dataIndex: 'startTime',
         key: 'startTime',
     },
     {
-        title: '结课时间',
+        title: '仓库预计过期时间',
         dataIndex: 'endTime',
         key: 'endTime',
     },
     {
-        title: '班主任',
+        title: '主管人',
         dataIndex: 'headTeacher',
         key: 'headTeacher',
+        render: (data: string, record: IClass) => {
+            //如果是teacher1返回 刘主管
+            if (data === "teacher1") {
+                return "刘主管"
+            }
+            return "李主管"
+        }
     },
     {
         title: '操作',
@@ -103,9 +110,9 @@ const ClassManage = () => {
                     updateData(values)
                 }}>
                     <Form.Item name="name">
-                        <Input placeholder="请输入班级名称" style={{width: '200px', marginRight: '20px'}}/>
+                        <Input placeholder="请输入仓库名称" style={{width: '200px', marginRight: '20px'}}/>
                     </Form.Item>
-                    <Button type="primary" style={{marginBottom: '20px'}} htmlType="submit">查询班级</Button>
+                    <Button type="primary" style={{marginBottom: '20px'}} htmlType="submit">查询仓库</Button>
                 </Form>
 
             </div>

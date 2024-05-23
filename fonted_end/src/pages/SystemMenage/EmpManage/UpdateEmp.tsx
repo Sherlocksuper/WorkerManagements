@@ -32,7 +32,7 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
         });
     }, []);
     // 模态框的标题
-    const title = mode === "add" ? "新增员工" : "编辑员工";
+    const title = mode === "add" ? "新增客户" : "编辑客户";
 
     const updateEmpo = (emp: IEmp) => {
         upgradeEmp(emp).then((res) => {
@@ -70,7 +70,7 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
     };
 
     const usernameRules = [
-        {required: true, message: '请输入用户名!'},
+        {required: true, message: '请输入客户!'},
         {
             pattern: /^(?!.*\s).{2,20}$/,
             message: '用户名必须2-20字符，且不能包含空格!',
@@ -78,10 +78,10 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
     ];
 
     const nameRules = [
-        {required: true, message: '请输入员工姓名!'},
+        {required: true, message: '请输入客户姓名!'},
         {
             pattern: /^(?!.*\s).{2,10}$/,
-            message: '员工姓名必须2-10个字，且不能包含空格!',
+            message: '客户名称2-10个字，且不能包含空格!',
         },
     ];
 
@@ -120,33 +120,40 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                     </Form.Item>
                     <Form.Item
                         name="gender"
-                        label="性别"
-                        rules={[{required: true, message: '请选择性别!'}]}
+                        label="交易种类"
+                        rules={[{required: true, message: '请选择交易种类!'}]}
                         initialValue={initValue?.gender === Gender.FeMail ? "2" : "1"}
                     >
                         <Select placeholder="请选择" defaultValue={initValue?.gender === Gender.FeMail ? "2" : "1"}>
-                            <Option value="1">男</Option>
-                            <Option value="2">女</Option>
+                            <Option value="1">零售</Option>
+                            <Option value="2">批发</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item
                         name="job"
-                        label="职位"
-                        rules={[{required: true, message: '请选择职位!'}]}
+                        label="购买物品"
+                        rules={[{required: true, message: '请选择购买物品!'}]}
                         initialValue={initValue?.job ?? "1"}
                     >
                         <Select placeholder="请选择" defaultValue={initValue?.job ?? "1"}>
-                            <Option value="1">班主任</Option>
-                            <Option value="2">讲师</Option>
-                            <Option value="3">院长</Option>
-                            <Option value="4">研究员</Option>
-                            <Option value="5">辅导员</Option>
+                            <Option value="1">
+                                棒棒糖
+                            </Option>
+                            <Option value="2">
+                                鞋子
+                            </Option>
+                            <Option value="3">
+                                上衣
+                            </Option>
+                            <Option value="4">
+                                裤子
+                            </Option>
                         </Select>
                     </Form.Item>
                     <Form.Item
                         name="entryDate"
-                        label="入职日期"
-                        rules={[{required: true, message: '请选择入职日期!'}]}
+                        label="购买日期"
+                        rules={[{required: true, message: '请选择购买日期!'}]}
                         initialValue={dayjs(initValue?.entryDate)}
                     >
                         <DatePicker/>
@@ -165,16 +172,16 @@ const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
                             }
                         </Select>
                     </Form.Item>
-                    <Form.Item
-                        name="image"
-                        label="图像"
-                        valuePropName="fileList"
-                        getValueFromEvent={(event, prevFileList) => prevFileList}
-                    >
-                        <Upload>
-                            <Button icon={<Upload/>}>Click to Upload</Button>
-                        </Upload>
-                    </Form.Item>
+                    {/*<Form.Item*/}
+                    {/*    name="image"*/}
+                    {/*    label="图像"*/}
+                    {/*    valuePropName="fileList"*/}
+                    {/*    getValueFromEvent={(event, prevFileList) => prevFileList}*/}
+                    {/*>*/}
+                    {/*    <Upload>*/}
+                    {/*        <Button icon={<Upload/>}>Click to Upload</Button>*/}
+                    {/*    </Upload>*/}
+                    {/*</Form.Item>*/}
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
                             保存

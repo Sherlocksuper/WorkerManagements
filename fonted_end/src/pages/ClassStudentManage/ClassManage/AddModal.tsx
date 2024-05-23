@@ -24,7 +24,7 @@ const AddClassModal: React.FC<IAddClassModalProps> = ({
     const [messageApi, contextHolder] = useMessage()
 
     // 模态框的标题
-    const title = mode === "add" ? "新增班级" : "编辑班级";
+    const title = mode === "add" ? "新增仓库" : "编辑仓库";
 
     const createClass = (newClass: IClass) => {
         updateClass(newClass).then(response => {
@@ -76,46 +76,46 @@ const AddClassModal: React.FC<IAddClassModalProps> = ({
                     }}
                 >
                     <Form.Item
-                        label="班级名称"
+                        label="仓库名称"
                         name="name"
                         initialValue={initValue?.name}
-                        rules={[{required: true, message: '请输入班级名称!'}]}
+                        rules={[{required: true, message: '请输入仓库名称!'}]}
                     >
-                        <Input placeholder="请输入班级名称，如：2024第01期10班"/>
+                        <Input placeholder="请输入仓库名称"/>
                     </Form.Item>
                     <Form.Item
-                        label="班级教室"
+                        label="仓库地址"
                         name="room"
                         initialValue={initValue?.room}
-                        rules={[{required: true, message: '请填写班级教室!'}]}
+                        rules={[{required: true, message: '请填写仓库地址!'}]}
                     >
-                        <Input placeholder="请填写班级教室"/>
+                        <Input placeholder="请填写仓库编号,如101"/>
                     </Form.Item>
                     <Form.Item
-                        label="开课时间"
+                        label="开用时间"
                         name="startTime"
-                        rules={[{required: true, message: '请选择开课时间!'}]}
+                        rules={[{required: true, message: '请选择开用时间!'}]}
                         initialValue={dayjs(initValue?.startTime)}
                     >
                         <DatePicker/>
                     </Form.Item>
                     <Form.Item
-                        label="结课时间"
+                        label="结束时间"
                         name="endTime"
-                        rules={[{required: true, message: '请选择结课时间!'}]}
+                        rules={[{required: true, message: '请选择结束时间!'}]}
                         initialValue={dayjs(initValue?.endTime)}
                     >
                         <DatePicker/>
                     </Form.Item>
                     <Form.Item
-                        label="班主任"
+                        label="主管人"
                         name="headTeacher"
                         initialValue={initValue?.headTeacher}
                         rules={[{required: true, message: '请选择班主任!'}]}
                     >
                         <Select placeholder="请选择">
-                            <Option value="teacher1">老师A</Option>
-                            <Option value="teacher2">老师B</Option>
+                            <Option value="teacher1">刘主管</Option>
+                            <Option value="teacher2">张主管</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item>

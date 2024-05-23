@@ -42,12 +42,12 @@ const StudentManage: React.FC = () => {
             ),
         },
         {
-            title: '姓名',
+            title: '订单名称',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '班级',
+            title: '所属仓库',
             dataIndex: 'class',
             key: 'class',
             render: (_: unknown, record: IStudent) => {
@@ -59,32 +59,38 @@ const StudentManage: React.FC = () => {
             }
         },
         {
-            title: '性别',
+            title: '订单类别',
             dataIndex: 'gender',
             key: 'gender',
+            render: (data: string, record: IStudent) => {
+                return data === "0" ? "零售" : "批发"
+            }
         },
         {
-            title: '手机号',
+            title: '订单编号',
             dataIndex: 'phone',
             key: 'phone',
         },
+        // {
+        //     title: '最高学历',
+        //     dataIndex: 'education',
+        //     key: 'education',
+        // },
         {
-            title: '最高学历',
-            dataIndex: 'education',
-            key: 'education',
-        },
-        {
-            title: '违纪次数',
+            title: '订单价格',
             dataIndex: 'recordTimes',
             key: 'recordTimes',
+            render: (data: number, record: IStudent) => {
+                return 100
+            }
         },
+        // {
+        //     title: '违纪扣分',
+        //     dataIndex: 'recordScore',
+        //     key: 'recordScore',
+        // },
         {
-            title: '违纪扣分',
-            dataIndex: 'recordScore',
-            key: 'recordScore',
-        },
-        {
-            title: '最后操作时间',
+            title: '订单修改时间',
             dataIndex: 'UpdatedAt',
             key: '',
         },
@@ -119,12 +125,12 @@ const StudentManage: React.FC = () => {
             width: '100%',
         }}>
             <Form layout="inline" onFinish={(values) => handleSearch(values)}>
-                <Form.Item label="学员姓名" name="name">
-                    <Input placeholder="请输入学员姓名"/>
+                <Form.Item label="订单" name="name">
+                    <Input placeholder="请输入订单名称"/>
                 </Form.Item>
 
-                <Form.Item label="手机号" name="phone">
-                    <Input placeholder="请输入手机号"/>
+                <Form.Item label="订单编号" name="phone">
+                    <Input placeholder="订单编号"/>
                 </Form.Item>
 
                 <Form.Item>

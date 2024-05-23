@@ -26,14 +26,18 @@ const DepartsManage: React.FC = () => {
             key: 'key',
         },
         {
-            title: '部门名称',
+            title: '供货商名称',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '最后操作时间',
-            dataIndex: 'UpdatedAt',
-            key: 'UpdatedAt',
+            title: '供货商id',
+            dataIndex: 'CreatedAt',
+            key: 'CreatedAt',
+            render: (data: string, record: IDepart) => {
+                let date = new Date(data)
+                return date.getFullYear() + (date.getMonth() + 1) + date.getDate()
+            }
         },
         {
             title: '操作',
